@@ -6,7 +6,10 @@
   <body>
     <h1>Hello, <%=user.username%></h1>
     <form action="/log-out" method="post"><button>Log out</button></form>
-    <a href="/add">Add new post</a>
+    <a href="/add">New post</a>
+    <% if (!user.member) {%>
+    <a href="/member">Become Member</a>
+    <% } %>
     <ul>
       <% posts.forEach(post => { %>
       <li>

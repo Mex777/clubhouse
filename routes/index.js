@@ -35,6 +35,10 @@ router.get("/add", loggedIn, (req, res) => {
   res.render("add");
 });
 
+router.get("/member", (req, res) => {
+  res.render("member", { message: "" });
+});
+
 router.post("/sign-up", controller.registerAccount);
 
 router.post("/log-in", controller.login);
@@ -49,6 +53,8 @@ router.post("/log-out", (req, res, next) => {
 });
 
 router.post("/add", controller.addPost);
+
+router.post("/member", controller.member);
 
 function loggedIn(req, res, next) {
   if (req.user) next();

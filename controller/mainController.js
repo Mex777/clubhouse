@@ -86,4 +86,13 @@ const addPost = async (req, res) => {
   res.redirect("/");
 };
 
-module.exports = { registerAccount, login, mainPage, addPost };
+const member = async (req, res) => {
+  if (req.body.code == process.env.MEMBER_CODE) {
+    await User.updateOne({ username: req.user.username }, { member: 1 });
+    res.redirect("/");
+    return;
+  }
+  res.render("member", { message: "Incorrect code" });
+};
+
+module.exports = { registerAccount, login, mainPage, addPost, member };
