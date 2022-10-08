@@ -73,4 +73,17 @@ const mainPage = async (req, res) => {
   res.render("index", { posts });
 };
 
-module.exports = { registerAccount, login, mainPage };
+const addPost = async (req, res) => {
+  const currPost = new Post({
+    title: req.body.title,
+    author: req.user.username,
+    date: Date.now(),
+    content: req.body.content,
+  });
+
+  await currPost.save();
+
+  res.redirect("/");
+};
+
+module.exports = { registerAccount, login, mainPage, addPost };

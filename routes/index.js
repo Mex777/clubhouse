@@ -31,6 +31,10 @@ router.get("/log-in", notLoggedIn, (req, res) => {
   res.render("log-in");
 });
 
+router.get("/add", loggedIn, (req, res) => {
+  res.render("add");
+});
+
 router.post("/sign-up", controller.registerAccount);
 
 router.post("/log-in", controller.login);
@@ -43,6 +47,8 @@ router.post("/log-out", (req, res, next) => {
     res.redirect("/");
   });
 });
+
+router.post("/add", controller.addPost);
 
 function loggedIn(req, res, next) {
   if (req.user) next();
