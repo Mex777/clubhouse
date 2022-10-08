@@ -39,6 +39,16 @@ passport.deserializeUser(function (id, done) {
 });
 
 const registerAccount = async (req, res) => {
+  const usernameTaken = await User.findOne({ username: req.body.username });
+  if (usernameTaken) {
+    res.render("sign-up", { message: "Username already taken" });
+    return;
+  }
+  if (req.body.password != req.body.confirmation) {
+    res.render("sign-up", { message: "Different passwords" });
+    return;
+  }
+
   const hashedPass = await bcrypt.hash(req.body.password, 10);
   const newUser = new User({
     username: req.body.username,

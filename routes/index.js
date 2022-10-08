@@ -13,12 +13,12 @@ router.use(
 );
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", (req, res) => {
   res.render("index", { title: "Express" });
 });
 
 router.get("/sign-up", (req, res) => {
-  res.render("sign-up");
+  res.render("sign-up", { message: "" });
 });
 
 router.get("/log-in", (req, res) => {
