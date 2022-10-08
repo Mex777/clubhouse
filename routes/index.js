@@ -1,32 +1,57 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/mainController");
+const passport = require("passport");
 const session = require("express-session");
+const User = require("../models/user");
 
 router.use(
   session({
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true },
   })
 );
 
+router.use(passport.initialize());
+router.use(passport.session());
+
 /* GET home page. */
-router.get("/", (req, res) => {
+router.get("/", loggedIn, (req, res) => {
+  console.log(req.user);
   res.render("index", { title: "Express" });
 });
 
-router.get("/sign-up", (req, res) => {
+router.get("/sign-up", notLoggedIn, (req, res) => {
   res.render("sign-up", { message: "" });
 });
 
-router.get("/log-in", (req, res) => {
+router.get("/log-in", notLoggedIn, (req, res) => {
+  console.log(req.user);
   res.render("log-in");
 });
 
 router.post("/sign-up", controller.registerAccount);
 
 router.post("/log-in", controller.login);
+
+router.post("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+function loggedIn(req, res, next) {
+  if (req.user) next();
+  else res.redirect("/log-in");
+}
+
+function notLoggedIn(req, res, next) {
+  if (req.user) res.redirect("/");
+  else next();
+}
 
 module.exports = router;
