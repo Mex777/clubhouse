@@ -16,18 +16,18 @@ router.use(
 router.use(passport.initialize());
 router.use(passport.session());
 
-/* GET home page. */
-router.get("/", loggedIn, (req, res) => {
-  console.log(req.user);
-  res.render("index", { title: "Express" });
+router.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
 });
+
+router.get("/", loggedIn, controller.mainPage);
 
 router.get("/sign-up", notLoggedIn, (req, res) => {
   res.render("sign-up", { message: "" });
 });
 
 router.get("/log-in", notLoggedIn, (req, res) => {
-  console.log(req.user);
   res.render("log-in");
 });
 

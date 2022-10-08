@@ -4,6 +4,21 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
+    <h1>Hello, <%=user.username%></h1>
     <form action="/log-out" method="post"><button>Log out</button></form>
+    <ul>
+      <% posts.forEach(post => { %>
+      <li>
+        <h3><%=post.title%></h3>
+        <% if (user.member) { %>
+        <h5><%=post.author%></h5>
+        <% } else { %>
+        <h5>Anonymus</h5>
+        <% } %>
+        <p><%=post.content%></p>
+        <p><%=post.date%></p>
+      </li>
+      <%}) %>
+    </ul>
   </body>
 </html>

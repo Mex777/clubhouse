@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("../models/user");
+const Post = require("../models/post");
 
 const auth = new LocalStrategy((username, password, done) => {
   User.findOne({ username }, async (err, userFound) => {
@@ -67,4 +68,9 @@ const login = passport.authenticate("local", {
   failureRedirect: "/log-in",
 });
 
-module.exports = { registerAccount, login };
+const mainPage = async (req, res) => {
+  const posts = await Post.find();
+  res.render("index", { posts });
+};
+
+module.exports = { registerAccount, login, mainPage };
